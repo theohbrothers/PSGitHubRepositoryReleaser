@@ -1,15 +1,13 @@
 function Generate-ReleaseNotes {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
-        [ValidateScript({Test-Path -Path $_ -PathType Container})]
+        [Parameter()]
         [string]$Path
         ,
-        [Parameter(Mandatory=$true)]
-        [ValidateNotNullOrEmpty()]
+        [Parameter()]
         [string]$Ref
         ,
-        [Parameter(Mandatory=$true)]
+        [Parameter()]
         [ValidateSet(
             "Changes-HashSubject-Merges",
             "Changes-HashSubject-NoMerges-Categorized",
@@ -35,25 +33,26 @@ function Generate-ReleaseNotes {
         )]
         [string]$Variant
         ,
-        [Parameter(Mandatory=$true)]
-        [ValidateNotNullOrEmpty()]
+        [Parameter()]
         [string]$ReleaseNotesPath
     )
-
-    try {
-        $private:generateArgs = @{
-            Path = $Path
-            Ref = $Ref
+    process {
+        $c = Get-GenerateReleaseNotesConfig @PSBoundParameters
+        try {
+            "Generating release notes of variant '$( $c['Variant'] )'" | Write-Verbose
+            $params = @{
+                Path = $c['Path']
+                Ref = $c['Ref']
+            }
+            $releaseNotesContent = & $c['Variant'] @params -ErrorAction Stop
+            if (!(Test-Path -Path ($c['ReleaseNotesPath'] | Split-Path -Parent))) {
+                New-Item -Path ($c['ReleaseNotesPath'] | Split-Path -Parent) -ItemType Directory
+            }
+            $releaseNotesContent | Out-File -FilePath $c['ReleaseNotesPath'] -Encoding utf8
+            "Release notes generated at the path '$( $c['ReleaseNotesPath'] )'" | Write-Verbose
+            $c['ReleaseNotesPath']
+        }catch {
+            Write-Error -Exception $_.Exception -Message $_.Exception.Message -Category $_.CategoryInfo.Category -TargetObject $_.TargetObject
         }
-        "Generating release notes of variant '$($Variant)'" | Write-Verbose
-        $releaseNotesContent = & $Variant @private:generateArgs -ErrorAction Stop
-        if (!(Test-Path -Path ($ReleaseNotesPath | Split-Path))) {
-            New-Item -Path ($ReleaseNotesPath | Split-Path) -ItemType Directory
-        }
-        $releaseNotesContent | Out-File -FilePath $ReleaseNotesPath -Encoding utf8
-        "Release notes generated at the path '$ReleaseNotesPath'" | Write-Verbose
-        $ReleaseNotesPath
-    }catch {
-        Write-Error -Exception $_.Exception -Message $_.Exception.Message -Category $_.CategoryInfo.Category -TargetObject $_.TargetObject
     }
 }

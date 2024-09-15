@@ -110,15 +110,15 @@
     ],
     "tasks": [
         {
-            "label": "Generate release notes (pwsh)",
+            "label": "Generate-ReleaseNotes (pwsh)",
             "type": "shell",
-            "command": "PROJECT_DIRECTORY='${input:PROJECT_DIRECTORY}' RELEASE_TAG_REF='${input:RELEASE_TAG_REF}' RELEASE_NOTES_VARIANT='${input:RELEASE_NOTES_VARIANT}' RELEASE_NOTES_PATH='${input:RELEASE_NOTES_PATH}' pwsh -NoLogo -NonInteractive -NoProfile -Command '$VerbosePreference = \"Continue\"; ./Invoke-Generate.ps1'",
+            "command": "PROJECT_DIRECTORY='${input:PROJECT_DIRECTORY}' RELEASE_TAG_REF='${input:RELEASE_TAG_REF}' RELEASE_NOTES_VARIANT='${input:RELEASE_NOTES_VARIANT}' RELEASE_NOTES_PATH='${input:RELEASE_NOTES_PATH}' pwsh -NoLogo -NonInteractive -NoProfile -Command 'Import-Module ./src/PSRepositoryReleaseManager; Generate-ReleaseNotes -Verbose'",
             "group": "build"
         },
         {
-            "label": "Generate release notes (powershell)",
+            "label": "Generate-ReleaseNotes (powershell)",
             "type": "shell",
-            "command": "PROJECT_DIRECTORY='${input:PROJECT_DIRECTORY}' RELEASE_TAG_REF='${input:RELEASE_TAG_REF}' RELEASE_NOTES_VARIANT='${input:RELEASE_NOTES_VARIANT}' RELEASE_NOTES_PATH='${input:RELEASE_NOTES_PATH}' powershell -NoLogo -NonInteractive -NoProfile -Command '$VerbosePreference = \"Continue\"; ./Invoke-Generate.ps1'",
+            "command": "PROJECT_DIRECTORY='${input:PROJECT_DIRECTORY}' RELEASE_TAG_REF='${input:RELEASE_TAG_REF}' RELEASE_NOTES_VARIANT='${input:RELEASE_NOTES_VARIANT}' RELEASE_NOTES_PATH='${input:RELEASE_NOTES_PATH}' powershell -NoLogo -NonInteractive -NoProfile -Command 'Import-Module ./src/PSRepositoryReleaseManager; Generate-ReleaseNotes -Verbose'",
             "group": "build"
         },
         {
