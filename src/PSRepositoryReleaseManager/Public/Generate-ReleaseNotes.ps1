@@ -26,6 +26,7 @@ function Generate-ReleaseNotes {
             "VersionDate-HashSubjectAuthor-NoMerges-Categorized",
             "VersionDate-HashSubjectAuthor-NoMerges-CategorizedSorted",
             "VersionDate-Subject-Merges",
+            "VersionDate-Subject-MergesWithPRLink-CategorizedSorted",
             "VersionDate-Subject-NoMerges-Categorized",
             "VersionDate-Subject-NoMerges-CategorizedSorted",
             "VersionDate-Subject-NoMerges",
